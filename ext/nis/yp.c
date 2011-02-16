@@ -114,7 +114,7 @@ rb_yp_all(int argc, VALUE argv[], VALUE self)
     break;
   };
 
-  res = yp_all(STR2CSTR(domainname), STR2CSTR(map), &ypcb);
+  res = yp_all(StringValuePtr(domainname), StringValuePtr(map), &ypcb);
   rb_yp_check_yperr(res);
 
   return Qnil;
@@ -132,7 +132,7 @@ rb_yp_first(VALUE self, VALUE domain, VALUE map)
     domain = rb_yp_get_default_domain(self);
   };
 
-  res = yp_first(STR2CSTR(domain), STR2CSTR(map), &key, &keylen, &val, &vallen);
+  res = yp_first(StringValuePtr(domain), StringValuePtr(map), &key, &keylen, &val, &vallen);
   rb_yp_check_yperr(res);
 
   if( keylen > 0 ){
@@ -164,8 +164,8 @@ rb_yp_next(VALUE self, VALUE domain, VALUE map, VALUE inkey)
     domain = rb_yp_get_default_domain(self);
   };
 
-  res = yp_next(STR2CSTR(domain), STR2CSTR(map),
-		STR2CSTR(inkey), RSTRING(inkey)->len,
+  res = yp_next(StringValuePtr(domain), StringValuePtr(map),
+		StringValuePtr(inkey), RSTRING_LEN(inkey),
 		&key, &keylen, &val, &vallen);
   rb_yp_check_yperr(res);
 
@@ -195,9 +195,9 @@ rb_yp_update(VALUE self, VALUE domain, VALUE map, VALUE ypop, VALUE inkey, VALUE
     domain = rb_yp_get_default_domain(self);
   };
 
-  res = yp_update(STR2CSTR(domain), STR2CSTR(map), FIX2INT(ypop),
-		  STR2CSTR(inkey), RSTRING(inkey)->len,
-		  STR2CSTR(inval), RSTRING(inval)->len);
+  res = yp_update(StringValuePtr(domain), StringValuePtr(map), FIX2INT(ypop),
+		  StringValuePtr(inkey), RSTRING_LEN(inkey),
+		  StringValuePtr(inval), RSTRING_LEN(inval));
   rb_yp_check_yperr(res);
 
   return INT2NUM(res);
@@ -214,8 +214,8 @@ rb_yp_match(VALUE self, VALUE domain, VALUE map, VALUE inkey)
     domain = rb_yp_get_default_domain(self);
   };
 
-  res = yp_match(STR2CSTR(domain), STR2CSTR(map),
-		 STR2CSTR(inkey), RSTRING(inkey)->len,
+  res = yp_match(StringValuePtr(domain), StringValuePtr(map),
+		 StringValuePtr(inkey), RSTRING_LEN(inkey),
 		 &val, &vallen);
   rb_yp_check_yperr(res);
 
@@ -236,7 +236,7 @@ rb_yp_order(VALUE self, VALUE domain, VALUE map)
     domain = rb_yp_get_default_domain(self);
   };
 
-  res = yp_order(STR2CSTR(domain), STR2CSTR(map), &order);
+  res = yp_order(StringValuePtr(domain), StringValuePtr(map), &order);
   rb_yp_check_yperr(res);
 
   return INT2NUM(order);
@@ -253,7 +253,7 @@ rb_yp_master(VALUE self, VALUE domain, VALUE map)
     domain = rb_yp_get_default_domain(self);
   };
 
-  res = yp_master(STR2CSTR(domain), STR2CSTR(map), &master);
+  res = yp_master(StringValuePtr(domain), StringValuePtr(map), &master);
   rb_yp_check_yperr(res);
 
   obj = rb_tainted_str_new2(master);
